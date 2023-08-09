@@ -12,8 +12,9 @@
     <label for="amount">{{ `Сумма: ${getAmount}` }}</label>
     <label for="">{{ `localStorage : ${getLocalStorageParams}` }}</label>
 
+    <hr>
+
     <div class="list">
-      <!-- в свободной форме отображать информацию о каждом событии -->
       <div v-for="(item, index) of history" :key="index">
         <br>
         {{ JSON.stringify(item) }}
@@ -35,6 +36,7 @@ export default {
         amount: 0,
         nonce: 0,
         localStorageParams: {},
+        // inputHistory: [],
         history: [],
         timeoutID: null,
         timeWait: 300
@@ -48,7 +50,7 @@ export default {
         return this.quantity
       },
       getAmount () {
-        return /*this.price * this.quantity*/this.amount
+        return this.amount
       },
       getNonce () {
         return this.nonce
@@ -75,6 +77,13 @@ export default {
         }
 
         this.timeoutID = setTimeout(() => {
+          // выводит последовательность изменения инпутов пользователем, до 3х посл. изменений ['price', 'price', 'amount']
+          // this.inputHistory.push({ [key]: value })
+          // if (this.inputHistory.length > 3) {
+          //   this.inputHistory.shift()
+          // }
+          // this.setHistory({ inputs: this.inputHistory })
+
           this.setHistory({ [key]: value })
           this[key] = value
 
@@ -155,24 +164,16 @@ export default {
 
         this.extractLocalStorageParams()
         this.setHistory({ response, storage: JSON.parse(this.getLocalStorageParams) })
-
-        console.group('send: ')
-        console.log('success: ', response.success)
-        console.log('getLocalStorageParams: ', this.getLocalStorageParams)
-        console.log('history: ', this.history)
-        console.groupEnd()
       }
     },
     mounted () {
       this.clearlocalStorageParams()
-      console.log('mounted: IndexPage')
     }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
   label {
-      margin: 0 60px 0 60px;
+      margin: 0 30px 0 30px;
   }
 </style>
